@@ -1,7 +1,7 @@
 <h1 align="center">PhantomBuster Claude Skills</h1>
 
 <p align="center">
-  <strong>Claude Code / Claude Desktop skills for running PhantomBuster LinkedIn & Sales Navigator Phantoms with unattended identity rotation</strong>
+  <strong>Claude Code / Claude Desktop skills for running PhantomBuster LinkedIn & Sales Navigator Phantoms </strong>
 </p>
 
 <p align="center">
@@ -11,7 +11,8 @@
   <a href="#prerequisites">Prerequisites</a>
 </p>
 
-Each skill drives one PhantomBuster Phantom that doesn't natively support multi-identity rotation, and installs a Claude scheduled task (cron) so rotation + launch happen unattended on a cadence the user picks (weekly, daily, or several times per day evenly spaced across 09:00–18:00). PhantomBuster's own `repeatedLaunchTimes` scheduler cannot swap identities between firings — these skills fill that gap.
+A set of Claude skills to get more out of [PhantomBuster](https://phantombuster.com/?referral=fmc-f8VgvF4). 
+Don't know about PhantomBuster yet? Check out my in-depth [Phantombuster Review](https://www.tetriz.io/blog/phantombuster-review-a-versatile-automation-tool/).
 
 ## Available skills
 
@@ -36,7 +37,9 @@ Or clone the whole repo and symlink the four folders in.
 
 ## How the rotation works
 
-Every skill in this repo follows the same shape:
+Some skills allow you to rotate LinkedIn credentials on specific Phantoms. That allows you to save on Phantom slots and get the most out of your subscription.
+
+Those skills follow the same shape:
 
 - **Setup mode** runs the first time you invoke the skill (or when you ask to reconfigure). It asks which cadence you want, counts your saved LinkedIn identities via `identities_search`, computes the cron expression(s), and installs one Claude scheduled task per rotation slot via the `scheduled-tasks` MCP server. It also clears any conflicting `repeatedLaunchTimes` on the PhantomBuster agent so the Phantom doesn't fire twice per slot.
 - **Run mode** is what each scheduled-task firing invokes. It re-reads the identity list, figures out whose turn it is (round-robin for weekly/daily, slot-of-day for several-times/day), calls `agents_save` to point the agent at that identity, then `agents_launch` to run it.
